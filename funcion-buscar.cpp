@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <string.h>
+#include <cstdlib>
 using namespace std;
 
 struct Nodo
@@ -19,13 +20,18 @@ void eliminar(Nodo *&lista, string a, int b, int c);
 
 void busqueda(string nombre);
 
+bool validacion(string nombre);
+
+
 int main()
 {
-   
+
     string nombre, aux;
-    string vacia= " ";
+   
     int edad, opt, telefono;
-    bool flag = false,status=true;
+    bool flag = false;
+ 
+    double numero;
 
     do
     {
@@ -50,8 +56,13 @@ int main()
             cout << "Ingrese edad: " << endl;
             cin >> edad;
             getline(cin, aux);
+
+
+   cout << "\ttienes que poner el guion (-)*\n";
+
             cout << "Ingresar el numero telefonico: " << endl;
             cin >> telefono;
+      
             Insertar(nombre, edad, telefono);
             break;
 
@@ -67,24 +78,22 @@ int main()
             break;
 
         case 4:
+            cout << "\tSolo se puede ingresar palabras*\n";
+
       
-           getline(cin, aux);
-            do{   cout<<"\tSolo se puede ingresar palabras*\n";
-
-               cout<<"Ingresar nombre: "<<endl;
-                getline(cin,nombre);
-                //si la longuitud del nombre es verdadera
-                if(nombre.length()!=true){
-                    
-                        //es falso
-    
-                
-                    status = false;
-                }
-                 
-            }while(nombre.length()==true);//dejara de preguntar hasta que se ponga un nombre
-
-             busqueda(nombre);
+                   getline(cin, aux);
+               cout << "Ingresar nombre: " << endl;
+                getline(cin, nombre);
+           
+           //con un while se la funcion booleana en el que si es falso
+           while(!validacion(nombre))
+           {
+        //imprima este mensaje
+cout<<"has ingresado un caracter invalido"<<endl;
+cin>>nombre;   
+           }
+          
+        busqueda(nombre);
             break;
 
         case 5:
@@ -176,38 +185,41 @@ void busqueda(string nombre)
     bool found = false, status = true;
     // crear el nodo auxiliar
     Nodo *aux = lista;
-    
-    string nameMayus = nombre,nameMinus = nombre; 
-    //convertir a minusculas el nombre a buscar
-    for(int i=0; i<nombre.length();i++){
-    //se hace el cambio a minusculas
-        nameMinus[i]=tolower(nombre[i]);
+
+    string nameMayus = nombre, nameMinus = nombre;
+    // convertir a minusculas el nombre a buscar
+    for (int i = 0; i < nombre.length(); i++)
+    {
+        // se hace el cambio a minusculas
+        nameMinus[i] = tolower(nombre[i]);
     }
-    
+
     while (aux != NULL)
-    {   
-        //convertir a minusculas el nombre almacenado
-        for(int i=0; i<aux->nombre.length();i++){
-            aux->nombre[i]=tolower(aux->nombre[i]);
+    {
+        // convertir a minusculas el nombre almacenado
+        for (int i = 0; i < aux->nombre.length(); i++)
+        {
+            aux->nombre[i] = tolower(aux->nombre[i]);
         }
 
-            //se hace un recorrido en donde se accede
-        for(int i=0; i<nombre.length();i++){
-        
-        //si el nombre que se busca es igual al nombre que se inserta
-            if(nameMinus[i]==aux->nombre[i])
-        {//es verdadera
+        // se hace un recorrido en donde se accede
+        for (int i = 0; i < nombre.length(); i++)
+        {
+
+            // si el nombre que se busca es igual al nombre que se inserta
+            if (nameMinus[i] == aux->nombre[i])
+            { // es verdadera
                 status = true;
-        }
-            else{
+            }
+            else
+            {
 
-           
-                //es falsa
+                // es falsa
                 status = false;
-                }
+            }
         }
 
-        //si es verdadera entonce se muestra la informacion 
+        // si es verdadera entonce se muestra la informacion
         if (status)
         {
             cout << "----------------------------------" << endl;
@@ -222,6 +234,27 @@ void busqueda(string nombre)
 
     if (found == false)
     {
-        cout << "No se ha encontrado"<<endl;
+        cout << "No se ha encontrado" << endl;
+    }
 }
+
+bool validacion(string nombre){
+
+    //se inicia el valor booleano valida en true;
+bool validar=true;
+
+//se crea un varialble tipo entero la cual es el tamaño de la variable nombre
+    int tam=nombre.length();
+//se hace el recorrido del tamaño de la variable nombre
+for(int i=0;i<tam;i++){
+    //se crea una condicional a partir de la tabla ASCII
+    if((nombre[i]<97 ||nombre[i]>122) && (nombre[i]<65 || nombre[i]>90)&&(nombre[i]>32||nombre[i]<32))
+    {
+        //si el nombre ha ingresar no esta entre los numeros de 97 y 122 entonces retorna en falso
+        validar=false;
+    }
 }
+//si no se cumple lo anterior se retorna true
+return validar;
+}
+
