@@ -22,15 +22,16 @@ void busqueda(string nombre);
 
 bool validacion(string nombre);
 
+bool validacionVacia(string nombre);
 
 int main()
 {
 
     string nombre, aux;
-   
+
     int edad, opt, telefono;
     bool flag = false;
- 
+
     double numero;
 
     do
@@ -49,20 +50,22 @@ int main()
         {
         case 1:
             getline(cin, aux);
-
             cout << "Ingresar nombre: " << endl;
             getline(cin, nombre);
+            while ((!validacion(nombre))||(!validacionVacia(nombre)))
+            {
+                cout << "No has ingresado nada o has puesto un caracter invalido,pon el nombre" << endl;
+                getline(cin, nombre);
+            }
 
             cout << "Ingrese edad: " << endl;
             cin >> edad;
-            getline(cin, aux);
 
-
-   cout << "\ttienes que poner el guion (-)*\n";
+            cout << "\ttienes que poner el guion (-)*\n";
 
             cout << "Ingresar el numero telefonico: " << endl;
             cin >> telefono;
-      
+
             Insertar(nombre, edad, telefono);
             break;
 
@@ -80,20 +83,18 @@ int main()
         case 4:
             cout << "\tSolo se puede ingresar palabras*\n";
 
-      
-                   getline(cin, aux);
-               cout << "Ingresar nombre: " << endl;
+            getline(cin, aux);
+            cout << "Ingresar nombre: " << endl;
+            getline(cin, nombre);
+
+            // con un while evalua la funcion booleana en el que si es diferente 
+            while (!validacion(nombre)||(!validacionVacia(nombre)))
+            {
+                // imprima este mensaje
+              cout << "No has ingresado nada o has puesto un caracter invalido,pon el nombre" << endl;
                 getline(cin, nombre);
-           
-           //con un while se la funcion booleana en el que si es falso
-           while(!validacion(nombre))
-           {
-        //imprima este mensaje
-cout<<"has ingresado un caracter invalido"<<endl;
-cin>>nombre;   
-           }
-          
-        busqueda(nombre);
+            }
+            busqueda(nombre);
             break;
 
         case 5:
@@ -238,23 +239,36 @@ void busqueda(string nombre)
     }
 }
 
-bool validacion(string nombre){
+bool validacion(string nombre)
+{
 
-    //se inicia el valor booleano valida en true;
-bool validar=true;
+    // se inicia el valor booleano valida en true;
+    bool validar = true;
 
-//se crea un varialble tipo entero la cual es el tamaño de la variable nombre
-    int tam=nombre.length();
-//se hace el recorrido del tamaño de la variable nombre
-for(int i=0;i<tam;i++){
-    //se crea una condicional a partir de la tabla ASCII
-    if((nombre[i]<97 ||nombre[i]>122) && (nombre[i]<65 || nombre[i]>90)&&(nombre[i]>32||nombre[i]<32))
+    // se crea un varialble tipo entero la cual es el tamaño de la variable nombre
+    int tam = nombre.length();
+    // se hace el recorrido del tamaño de la variable nombre
+    for (int i = 0; i < tam; i++)
     {
-        //si el nombre ha ingresar no esta entre los numeros de 97 y 122 entonces retorna en falso
-        validar=false;
+        // se crea una condicional a partir de la tabla ASCII
+        if ((nombre[i] < 97 || nombre[i] > 122) && (nombre[i] < 65 || nombre[i] > 90) && (nombre[i] > 32 || nombre[i] < 32))
+        {
+            // si el nombre ha ingresar no esta entre los numeros de 97 y 122 entonces retorna en falso
+            validar = false;
+        }
     }
-}
-//si no se cumple lo anterior se retorna true
-return validar;
+    // si no se cumple lo anterior se retorna true
+    return validar;
 }
 
+bool validacionVacia(string nombre)
+{
+    bool validacion = true;
+
+    if ((nombre.length()) == 0)
+    {
+
+        validacion = false;
+    }
+    return validacion;
+}
